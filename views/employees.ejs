@@ -1,0 +1,68 @@
+<head>
+<style>
+*{
+    margin :0;
+}
+.container {
+margin: 0 auto;
+width: max-content;
+}
+table,
+th,
+td{
+    border:2px solid blue
+}
+
+h1{
+    text-align: center;
+}
+
+</style>
+</head>
+<body>
+    <div class="container">
+<h1>Employees Page</h1>
+<table>
+<tr>
+<th>EID</th>
+<th>ID</th>
+<th>Name</th>
+<th>Salary</th>
+</tr>
+<%for(let e of employees){%>
+    <tr>
+        <td>
+            <%= e.eid %>
+        </td>
+        <td>
+            <%= e.ename %>
+        </td>
+        <td>
+            <%= e.role %>
+        </td>
+        <td>
+            <%= e.salary %>
+        </td>
+        <td>
+            <a href="/employees/edit/<%= e.eid %>">Update</a>
+
+        </td>
+
+
+
+
+
+
+    </tr>
+    <%}%>
+
+
+
+
+
+</table>
+
+<a href="/">Home</a>
+
+</div>
+</body>
