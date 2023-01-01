@@ -10,13 +10,13 @@ const port = 8000;
 const app = express();
 
 app.set('view engine', 'ejs')
-
+//use of parse 
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 app.use(cors());
 
 var pool;
-
+//connection to mysql
 mysql.createPool({
     connectionLimit: 3,
     user: "joseph",
@@ -35,12 +35,12 @@ mysql.createPool({
 
 
 
-// Create a server object:
+//Go home Page:
 app.get('/', (req, res) => {
     res.render("home", { errors: undefined })
 })
 
-
+//The Employees List Page
 app.get('/employees', (req, res) => {
 
     pool.query("select * from employee").then((d) => {
@@ -51,6 +51,7 @@ app.get('/employees', (req, res) => {
     })
 
 });
+//Edit the Employees page
 app.get('/employees/edit/:eid', (req, res) => {
 
     pool.query("select * from employee e where e.eid = '" + req.params.eid + "'").then((d) => {
@@ -61,7 +62,7 @@ app.get('/employees/edit/:eid', (req, res) => {
     })
 
 });
-
+//Editing the Employees page requirements 
 app.post('/employees/edit/:eid',
     [
         check("name").isLength({ min: 5 }).withMessage("Employee Name has to be 5 characters Long")
@@ -80,7 +81,7 @@ app.post('/employees/edit/:eid',
         data.ename = req.body.name;
         data.role = req.body.role;
         data.salary = req.body.salary;
-
+        
         if (!errors.isEmpty()) {
             res.render("editEmployee", { e: data, errors: errors.errors })
 
@@ -102,7 +103,7 @@ app.post('/employees/edit/:eid',
 
 
 
-
+//Departments page
 app.get('/depts', (req, res) => {
 
     pool.query("SELECT dept.did,dept.dname,loc.county,dept.budget FROM dept JOIN location AS loc ON loc.lid = dept.lid").then((d) => {
@@ -115,7 +116,7 @@ app.get('/depts', (req, res) => {
 
 });
 
-
+//deleting from departments page
 app.get('/depts/delete/:did'), (req, res) => {
     pool.query(`DELETE FROM dept WHERE did = '${req, params.did}';`).then((d) => {
         res.redirect("/departments")
@@ -129,7 +130,7 @@ app.get('/depts/delete/:did'), (req, res) => {
     })
 
 }
-
+//start of MongoDB  code for connection and adding employees
 const url = 'mongodb+srv://joseph:asare@cluster0.jck3wxg.mongodb.net/test';
 const dbName = 'employeesDB'
 const colName = 'employees'
